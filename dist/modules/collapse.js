@@ -1,6 +1,6 @@
 /**
  * angular-strap
- * @version v2.3.6 - 2015-11-14
+ * @version v2.3.6 - 2015-12-09
  * @link http://mgcrea.github.io/angular-strap
  * @author Olivier Louvignes <olivier@mg-crea.com> (https://github.com/mgcrea)
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -144,10 +144,19 @@ angular.module('mgcrea.ngStrap.collapse', []).provider('$collapse', function() {
       scope.$on('$destroy', function() {
         bsCollapseCtrl.$unregisterToggle(element);
       });
-      element.on('click', function() {
+      var actionEventHandler = function() {
         var index = attrs.bsCollapseToggle && attrs.bsCollapseToggle !== 'bs-collapse-toggle' ? attrs.bsCollapseToggle : bsCollapseCtrl.$toggles.indexOf(element);
         bsCollapseCtrl.$setActive(index * 1);
         scope.$apply();
+      };
+      element.on('click', actionEventHandler);
+      element.bind('keydown keypress', function(e) {
+        if (e.which === 13) {
+          actionEventHandler();
+          e.preventDefault();
+        } else if (e.which !== 16 && e.which !== 9) {
+          e.preventDefault();
+        }
       });
     }
   };
