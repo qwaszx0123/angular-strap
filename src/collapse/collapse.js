@@ -220,8 +220,12 @@ angular.module('mgcrea.ngStrap.collapse', [])
         element.bind('keydown keypress', function(e) {
           if(e.which === 13) {
             actionEventHandler();
+            e.preventDefault();
           }
-          e.preventDefault();
+          else if(e.which !== 16 && e.which !== 9)
+          {
+            e.preventDefault();
+          }
         });
       }
     };
