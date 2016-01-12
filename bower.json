@@ -1,6 +1,6 @@
 {
   "name": "angular-strap",
-  "description": "AngularStrap - AngularJS directives for Bootstrap",
+  "description": "AngularStrap - AngularJS directives for Bootstrap; Modified for 508c",
   "version": "2.3.9",
   "keywords": [
     "angular",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mgcrea/angular-strap.git"
+    "url": "https://github.com/SumTotalSystems/angular-strap.git"
   },
   "licenses": [
     {
@@ -24,8 +24,8 @@
     }
   ],
   "main": [
-    "dist/angular-strap.js",
-    "dist/angular-strap.tpl.js"
+    "dist/angular-strap.min.js",
+    "dist/angular-strap.tpl.min.js"
   ],
   "ignore": [
     "docs",
