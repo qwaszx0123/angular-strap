@@ -1,6 +1,6 @@
 /**
  * angular-strap
- * @version v2.3.9 - 2016-06-10
+ * @version v2.3.9 - 2016-06-14
  * @link http://mgcrea.github.io/angular-strap
  * @author Olivier Louvignes <olivier@mg-crea.com> (https://github.com/mgcrea)
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -61,6 +61,11 @@ angular.module('mgcrea.ngStrap.tab', []).provider('$tab', function() {
     };
     self.$isActive = $scope.$isActive = function($pane, $index) {
       return self.$panes.$active === $pane.name || self.$panes.$active === $index;
+    };
+    self.$onKeyPress = $scope.$onKeyPress = function(e, index) {
+      if (e.keyCode === 32 || e.charCode === 32 || e.keyCode === 13 || e.charCode === 13) {
+        self.$setActive(index);
+      }
     };
   };
   this.$get = function() {

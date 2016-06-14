@@ -1,13 +1,11 @@
 /**
  * angular-strap
- * @version v2.3.9 - 2016-06-10
+ * @version v2.3.9 - 2016-06-14
  * @link http://mgcrea.github.io/angular-strap
  * @author Olivier Louvignes <olivier@mg-crea.com> (https://github.com/mgcrea)
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
 'use strict';
-
-bsCompilerService.$inject = [ '$q', '$http', '$injector', '$compile', '$controller', '$templateCache' ];
 
 angular.module('mgcrea.ngStrap.core', []).service('$bsCompiler', bsCompilerService);
 
@@ -98,3 +96,5 @@ function bsCompilerService($q, $http, $injector, $compile, $controller, $templat
     });
   }
 }
+
+bsCompilerService.$inject = [ '$q', '$http', '$injector', '$compile', '$controller', '$templateCache' ];
