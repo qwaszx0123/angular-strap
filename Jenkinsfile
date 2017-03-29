@@ -1,20 +1,22 @@
 node('master') {
   checkout scm
 
-  stage 'Install Dependencies'
+  stage('Install Dependencies') {
 
   sh 'npm install'
   sh 'bower install'
+  }
 
-  stage 'Build'
+  stage('Build') {
 
-  sh 'node_modules/.bin/gulp build'
+    sh '$(npm bin)/gulp build'
+  }
 
-  stage 'Test'
+  stage('Test') {
 
-  sh 'npm run lint'
-  sh 'node_modules/.bin/gulp karma:unit'
+    sh 'npm run lint'
+    sh '$(npm bin)/gulp karma:unit'
+  }
 
   milestone 1
 }
-
