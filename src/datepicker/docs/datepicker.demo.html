@@ -26,7 +26,7 @@
 
   <div class="callout callout-info">
     <h4>508 Compliance</h4>
-    <p>The HTML output and functionlity for the control supports screen-reader use.</p>
+    <p>This control when properly configured will output HTML and setup functionlity in order to be compliant screen-reader use.</p>
   </div>
 
   <h3>Live demo
@@ -60,7 +60,7 @@ $scope.untilDate = {{untilDate}}; // &lt;- {{ getType('untilDate') }}
             data-has-clear="true" bs-datepicker>
         </div>
         <div class="form-group col-xs-6">
-          <input type="text" class="form-control" ng-model="untilDate" data-min-date="{{fromDate}}" placeholder="Until" data-has-today="true"
+          <input type="text" class="form-control" ng-model="untilDate" data-min-date="{{fromDate}}" placeholder="Until" data-has-today="true" trigger="click"
             data-has-clear="false" bs-datepicker>
         </div>
       </div>
@@ -68,27 +68,38 @@ $scope.untilDate = {{untilDate}}; // &lt;- {{ getType('untilDate') }}
   </div>
 
   <h4>508 Usage</h4>
+  <div class="callout callout-danger">
+    <h4>Configuration for 508 Compliance</h4>
+    <p>The datepicker has a HTML structure that is supported by common screenreaders. However, for a truly accessible experience there are some functions that must be enabled
+      in order to support correct keyboard navigation. It is left up to the implementor to determine the correct level of accessibility which is desired.
+    </p>
+  </div>
   <p>
-    To utilize this module in a manner that is compliant with 508c and to allow screen readers such as JAWS to read the HTML appropriately the following layout must be observed.
-    The dropdown containing the
+    A large effort has been made to have the HTML output in the datepicker's dropdown be screen-reader compliant. There are several accessibility concessions that each
+    implementation must take into account. The overall layout of the form for a datepicker should be as shown in the example layout, an input for text input of the date and an
+    accompanying button to show the picker. It is necessary for the button to move focus from the button when activated to the datepicker. This is accomplished by setting the
+    <code>trigger</code> to <em>'manual'</em> and <code>focus-on-open</code> attribute to <em>true</em>.
   </p>
+  <pre class="bs-example-scope">$scope.startingDate = {{startingDate}}; // &lt;- {{ getType('startingDate') }}
+$scope.toDate = {{toDate}}; // &lt;- {{ getType('toDate') }}
+</pre>
   <div ng-form="fiveOhAteForm" class="form-inline" role="form">
     <div class="bs-example" append-source>
       <div class="form-group">
         <label class="control-label" for="start_date">Start Date</label>
         <div class="input-group">
-          <input id="start_date" title="Start Date" type="text" class="form-control" ng-model="selectedDate" />
+          <input id="start_date" title="Start Date" type="text" class="form-control" ng-model="startingDate"  bs-datepicker-display />
           <span class="input-group-btn">
-            <button id="start_date_picker" class="btn btn-default" type="button" title="Start Date" role="button" aria-haspopup="true" bs-datepicker ng-model="selectedDate" trigger="click" autoclose="false" focus-on-open="true"><i class="fa fa-calendar"></i></button>
+            <button id="start_date_picker" class="btn btn-default" type="button" title="Start Date" role="button" bs-datepicker ng-model="startingDate" trigger="click" focus-on-open="true" label-next="Next" label-previous="Previous" label-month="Select to change the month." label-year="Select to change years." label-days="Select to change day."><i class="fa fa-calendar"></i></button>
           </span>
         </div>
       </div>
       <div class="form-group">
         <label class="control-label" for="end_date">End Date</label>
         <div class="input-group">
-          <input id="end_date" type="text" class="form-control" ng-model="endDate">
+          <input id="end_date" type="text" class="form-control" ng-model="toDate" bs-datepicker-display>
           <span class="input-group-btn">
-            <button class="btn btn-default" type="button" bs-datepicker ng-model="endDate" trigger="click" autoclose="true"><i class="fa fa-calendar"></i></button>
+            <button class="btn btn-default" type="button" bs-datepicker ng-model="toDate" trigger="click" data-autoclose="1"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
       </div>
