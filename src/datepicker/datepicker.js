@@ -190,9 +190,6 @@ angular.module('mgcrea.ngStrap.datepicker', [
             $datepicker.hide();
           }
         };
-        scope.$headerBlur = function(evt) {
-
-        };
 
         // Public methods
 
@@ -966,20 +963,20 @@ angular.module('mgcrea.ngStrap.datepicker', [
 
             if (!picker.$date) {
               return false;
-            } else {
-              actualTime = picker.$date.getTime();
             }
+
+            actualTime = picker.$date.getTime();
 
             var newDate;
 
             switch (evt.keyCode) {
               // enter
-              case 13: 
+              case 13:
                 if (options.focusOnOpen) {
                   picker.select(new Date(actualTime), true);
                   return false;
-                } 
-              break;
+                }
+                break;
               // pageup
               case 33:
                 if (evt.altKey) { // move back a year
@@ -1130,8 +1127,6 @@ angular.module('mgcrea.ngStrap.datepicker', [
             else if (evt.keyCode === 38) newDate.setMonth(actualMonth - 4);
             else if (evt.keyCode === 39) newDate.setMonth(actualMonth + 1);
             else if (evt.keyCode === 40) newDate.setMonth(actualMonth + 4);
-
-
 
             if (options.focusOnOpen && evt.keyCode === 13) picker.select(new Date(picker.$date));
             else if (!this.isDisabled(newDate)) picker.select(newDate, true);
