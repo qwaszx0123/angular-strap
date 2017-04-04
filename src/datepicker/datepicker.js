@@ -211,7 +211,7 @@ angular.module('mgcrea.ngStrap.datepicker', [
         };
 
         $datepicker.select = function (date, keep) {
-          console.warn('$datepicker.select', date, scope.$mode);
+          // console.warn('$datepicker.select', date, scope.$mode);
           if (angular.isDate(date)) {
             if (!angular.isDate(controller.$dateValue) || isNaN(controller.$dateValue.getTime())) {
               controller.$dateValue = new Date(date);
@@ -542,7 +542,6 @@ angular.module('mgcrea.ngStrap.datepicker', [
 
         // Watch model for changes
         scope.$watch(attr.ngModel, function (newValue, oldValue) {
-          console.log('watch firing on ngModel:', newValue);
           datepicker.update(controller.$dateValue);
         }, true);
 
@@ -1026,11 +1025,10 @@ angular.module('mgcrea.ngStrap.datepicker', [
                 return false;
             }
 
-            console.log('day view - keydown handler - keycode:', evt.keyCode, newDate);
-
             if (!this.isDisabled(newDate)) picker.select(newDate, true);
 
-            evt.stopPropagation();
+            if (evt && evt.stopPropagation) evt.stopPropagation();
+            
             return false;
           }
         }, {
@@ -1106,8 +1104,6 @@ angular.module('mgcrea.ngStrap.datepicker', [
             return lastDate < options.minDate || date.getTime() > options.maxDate;
           },
           onKeyDown: function (evt) {
-            console.log('months view - picker keydown handler.');
-
             // If the picker doesn't have a date selected and the event comes from the today TD
             // then set the picker's $date to today and set the actual time to its value.
             if (options.keyboard &&
