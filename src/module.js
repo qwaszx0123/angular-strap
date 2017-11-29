@@ -1,3 +1,4 @@
+'use strict';
 
 angular.module('mgcrea.ngStrap', [
   'mgcrea.ngStrap.modal',
@@ -12,6 +13,7 @@ angular.module('mgcrea.ngStrap', [
   'mgcrea.ngStrap.popover',
   'mgcrea.ngStrap.dropdown',
   'mgcrea.ngStrap.typeahead',
+  'mgcrea.ngStrap.combobox',
   'mgcrea.ngStrap.scrollspy',
   'mgcrea.ngStrap.affix',
   'mgcrea.ngStrap.tab',

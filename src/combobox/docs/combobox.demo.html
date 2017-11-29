@@ -1,14 +1,14 @@
-<div class="bs-docs-section" ng-controller="TypeaheadDemoCtrl">
+<div class="bs-docs-section" ng-controller="ComboboxDemoCtrl">
 
   <div class="page-header">
-    <h1 id="typeaheads">Typeaheads
-      <a class="small" href="//github.com/mgcrea/angular-strap/blob/master/src/typeahead/typeahead.js" target="_blank">typeahead.js</a>
+    <h1 id="comboboxes">Comboboxes
+      <a class="small" href="//github.com/mgcrea/angular-strap/blob/master/src/combobox/combobox.js" target="_blank">combobox.js</a>
     </h1>
-    <code>mgcrea.ngStrap.typeahead</code>
+    <code>mgcrea.ngStrap.combobox</code>
   </div>
 
 
-  <h2 id="typeaheads-examples">Examples</h2>
+  <h2 id="comboboxes-examples">Examples</h2>
   <p>Add quick, dynamic typeahead functionality with any form text input.</p>
 
   <div class="callout callout-danger">
@@ -24,29 +24,29 @@
       bs-tooltip></a>
   </h3>
   <pre class="bs-example-scope">$scope.selectedState = "{{selectedState}}";
-$scope.states = {{states}};
+  $scope.states = {{states}};
 
-$scope.selectedIcon = "{{selectedIcon}}";
-$scope.icons = "{{icons}}";
+  $scope.selectedIcon = "{{selectedIcon}}";
+  $scope.icons = "{{icons}}";
 
-$scope.selectedAddress = "{{selectedAddress}}";
-</pre>
+  $scope.selectedAddress = "{{selectedAddress}}";
+  </pre>
   <div class="bs-example" style="padding-bottom: 24px;" append-source>
     <form class="form-inline" role="form">
       <div class="form-group">
         <label id="example_1_label">
           <i aria-hidden="true" class="fa fa-globe"></i> State</label>
 
-        <div role="combobox" id="example_1_combobox" aria-haspopup="true">
-          <input bs-typeahead id="example_1" aria-labelledby="example_1_label" type="text" class="form-control" ng-model="selectedState"
-            bs-options="state for state in states" placeholder="Enter state">
+        <div id="example_1_combobox" aria-labelledby="example_1_label" bs-combobox bs-options="state for state in states" ng-model="selectedState">
         </div>
 
       </div>
       <div class="form-group">
-        <label>Icon</label>
-        <input type="text" class="form-control" ng-model="selectedIcon" data-min-length="0" data-html="1" data-auto-select="true"
-          data-animation="am-flip-x" bs-options="icon as icon.label for icon in icons" placeholder="Enter icon" bs-typeahead>
+        <label id="example_2_label">Icon</label>
+
+        <div id="example_2_combobox" aria-labelledby="example_2_label" bs-combobox ng-model="selectedIcon" data-min-length="0" data-html="1"
+          data-auto-select="true" data-animation="am-flip-x" bs-options="icon as icon.label for icon in icons" placeholder="Enter icon">
+        </div>
       </div>
       <hr>
       <!-- Using an async data provider -->
@@ -80,10 +80,10 @@ $scope.selectedAddress = "{{selectedAddress}}";
     <p>Available for programmatic use (mainly in directives as it requires a DOM element).</p>
     <div class="highlight">
       <pre>
-        <code class="javascript" highlight-block>
-          var myTypeahead = $typeahead(element, {controller: someModelController});
-        </code>
-      </pre>
+          <code class="javascript" highlight-block>
+            var myTypeahead = $typeahead(element, {controller: someModelController});
+          </code>
+        </pre>
     </div>
   </div>
 
@@ -282,17 +282,17 @@ $scope.selectedAddress = "{{selectedAddress}}";
     </p>
     <div class="highlight">
       <pre class="bs-exemple-code">
-        <code class="javascript" highlight-block>
-          angular.module('myApp')
-          .config(function($typeaheadProvider) {
-            angular.extend($typeaheadProvider.defaults, {
-              animation: 'am-flip-x',
-              minLength: 2,
-              limit: 8
-            });
-          })
-        </code>
-      </pre>
+          <code class="javascript" highlight-block>
+            angular.module('myApp')
+            .config(function($typeaheadProvider) {
+              angular.extend($typeaheadProvider.defaults, {
+                animation: 'am-flip-x',
+                minLength: 2,
+                limit: 8
+              });
+            })
+          </code>
+        </pre>
     </div>
   </div>
 
