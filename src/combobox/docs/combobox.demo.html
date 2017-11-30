@@ -23,7 +23,7 @@
       data-content-js-url="typeahead/docs/typeahead.demo.js" ng-plunkr data-title="edit in plunker" data-placement="right"
       bs-tooltip></a>
   </h3>
-  <pre class="bs-example-scope">$scope.selectedState = "{{selectedState}}";
+  <pre class="bs-example-scope">$scope.selectedState = "{{selectedState1}}";
   $scope.states = {{states}};
 
   $scope.selectedIcon = "{{selectedIcon}}";
@@ -37,7 +37,7 @@
         <label id="example_1_label">
           <i aria-hidden="true" class="fa fa-globe"></i> State</label>
 
-        <div id="example_1_combobox" aria-labelledby="example_1_label" bs-combobox bs-options="state for state in states" ng-model="selectedState">
+        <div id="example_1_combobox" placeholder="Enter state" aria-labelledby="example_1_label" bs-combobox bs-options="state for state in states" ng-model="selectedState1">
         </div>
 
       </div>

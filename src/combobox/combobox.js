@@ -41,24 +41,20 @@ angular.module('mgcrea.ngStrap.combobox', ['mgcrea.ngStrap.core', 'mgcrea.ngStra
         var options = angular.extend({}, defaults, config);
         // var promise = $combobox.$promise = $bsCompiler.compile(options);
         var scope = $combobox.$scope = options.scope;
+        var wrapper = element.children('div');
 
         // Store $id to identify the triggering element in events
         // give priority to options.id, otherwise, try to use
         // element id if defined
         scope.id = $combobox.$id = options.id || element.attr('id') || '';
-        scope.$isExpanded = false;
 
-        scope.$on(options.prefixEvent + '.show', function (tooltip) {
-          scope.$isExpanded = true;
+        scope.$on(options.prefixEvent + '.show', function (typeahead) {
+          wrapper.attr('aria-expanded', 'true');
         });
 
-        scope.$on(options.prefixEvent + '.hide', function (tooltip) {
-          scope.$isExpanded = false;
+        scope.$on(options.prefixEvent + '.hide', function (typeahead) {
+          wrapper.attr('aria-expanded', 'false');
         });
-
-        $combobox.init = function () {
-
-        };
 
         return $combobox;
       }
@@ -102,7 +98,8 @@ angular.module('mgcrea.ngStrap.combobox', ['mgcrea.ngStrap.core', 'mgcrea.ngStra
       'ngModel',
       'bsOptions',
       'ariaHaspopup',
-      'ariaLabelledby'
+      'ariaLabelledby',
+      'placeholder'
     ];
 
     function postLink(scope, element, attr, controller) {
@@ -131,6 +128,18 @@ angular.module('mgcrea.ngStrap.combobox', ['mgcrea.ngStrap.core', 'mgcrea.ngStra
         }
       });
 
+      // scope.$watch(attr.ngModel, function (newValue, oldValue) {
+      //   console.log('newValue', newValue)
+      //   console.log('oldValue', oldValue)
+      //   scope.$modelValue = newValue; // Publish modelValue on scope for custom templates
+      //   controller.$render();
+      // });
+
+      // modelValue -> $formatters -> viewValue
+      // controller.$formatters.push(function (modelValue) {
+      //   console.warn('$formatter("%s"): modelValue=%o (%o)', element.attr('ng-model'), modelValue, typeof modelValue);
+      // });
+
       // Initialize combobox
       var combobox = $combobox(element, controller, options);
     }
@@ -144,8 +153,7 @@ angular.module('mgcrea.ngStrap.combobox', ['mgcrea.ngStrap.core', 'mgcrea.ngStra
     return {
       restrict: 'EAC',
       require: 'ngModel',
-      templateUrl: $combobox.defaults.comboboxTemplateUrl,
-      scope: true,
+      templateUrl: defaults.comboboxTemplateUrl,
       compile: function (tElement, tAttrs) {
         var input = null;
         if (tElement && tElement.length > 0 && tElement[0]) {
@@ -156,12 +164,15 @@ angular.module('mgcrea.ngStrap.combobox', ['mgcrea.ngStrap.core', 'mgcrea.ngStra
           }
         }
 
-
         if (input) {
           angular.forEach(attrsToCheck, function (key) {
             if (angular.isDefined(tAttrs[key]) && key === 'id') {
+              var wrapper = tElement.children('div');
+              wrapper.attr('id', tAttrs[key] + '_combobox');
+              wrapper.attr('aria-owns', tAttrs[key] + '_input_listbox');
+
               input.attr('id', tAttrs[key] + '_input');
-              input.attr('container', '#' + tAttrs[key] + '_wrapper');
+              input.attr('container', 'body');
             } else if (angular.isDefined(tAttrs[key])) {
               input.attr(toKebabCase(key), tAttrs[key]);
             }

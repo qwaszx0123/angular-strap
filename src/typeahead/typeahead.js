@@ -20,7 +20,8 @@ angular.module('mgcrea.ngStrap.typeahead', ['mgcrea.ngStrap.tooltip', 'mgcrea.ng
       limit: 6,
       autoSelect: false,
       comparator: '',
-      trimValue: true
+      trimValue: true,
+      updateOnSelection: false
     };
 
     var KEY_CODES = {
@@ -67,7 +68,7 @@ angular.module('mgcrea.ngStrap.typeahead', ['mgcrea.ngStrap.tooltip', 'mgcrea.ng
           return $typeahead.$isVisible();
         };
 
-        scope.$isActive = function isActive (index) {
+        scope.$isActive = function isActive(index) {
           return scope.$activeIndex === index ? true : undefined;
         };
 
@@ -160,6 +161,7 @@ angular.module('mgcrea.ngStrap.typeahead', ['mgcrea.ngStrap.tooltip', 'mgcrea.ng
             evt.stopPropagation();
           }
 
+          var valToUpdate;
           // Select with enter
           if (evt.keyCode === KEY_CODES.enter && scope.$matches.length) {
             $typeahead.select(scope.$activeIndex);
@@ -167,9 +169,21 @@ angular.module('mgcrea.ngStrap.typeahead', ['mgcrea.ngStrap.tooltip', 'mgcrea.ng
           } else if (evt.keyCode === KEY_CODES.upArrow && scope.$activeIndex > 0) {
             scope.$activeIndex--;
             setAriaActiveDescendant(scope.$activeIndex);
+            if (options.updateOnSelection) {
+              valToUpdate = scope.$matches[scope.$activeIndex].value;
+              if (typeof valToUpdate === 'string') {
+                element.val(valToUpdate);
+              }
+            }
           } else if (evt.keyCode === KEY_CODES.downArrow && scope.$activeIndex < scope.$matches.length - 1) {
             scope.$activeIndex++;
             setAriaActiveDescendant(scope.$activeIndex);
+            if (options.updateOnSelection) {
+              valToUpdate = scope.$matches[scope.$activeIndex].value;
+              if (typeof valToUpdate === 'string') {
+                element.val(valToUpdate);
+              }
+            }
           } else if (angular.isUndefined(scope.$activeIndex)) {
             scope.$activeIndex = 0;
             setAriaActiveDescendant();
@@ -178,6 +192,10 @@ angular.module('mgcrea.ngStrap.typeahead', ['mgcrea.ngStrap.tooltip', 'mgcrea.ng
           // update scrollTop property on $typeahead when scope.$activeIndex is not in visible area
           $typeahead.$$updateScrollTop($typeahead.$element[0], scope.$activeIndex);
           scope.$digest();
+        };
+
+        $typeahead.$onBlur = function (evt) {
+          controller.$rollbackViewValue();
         };
 
         // Overrides
@@ -200,7 +218,10 @@ angular.module('mgcrea.ngStrap.typeahead', ['mgcrea.ngStrap.tooltip', 'mgcrea.ng
 
               $typeahead.$element.on('mousedown', $typeahead.$onMouseDown);
               if (options.keyboard) {
-                if (element) element.on('keydown', $typeahead.$onKeyDown);
+                if (element) {
+                  element.on('keydown', $typeahead.$onKeyDown);
+                  element.on('blur', $typeahead.$onBlur);
+                }
               }
             }
           }, 0, false);
@@ -210,7 +231,10 @@ angular.module('mgcrea.ngStrap.typeahead', ['mgcrea.ngStrap.tooltip', 'mgcrea.ng
         $typeahead.hide = function () {
           if ($typeahead.$element) $typeahead.$element.off('mousedown', $typeahead.$onMouseDown);
           if (options.keyboard) {
-            if (element) element.off('keydown', $typeahead.$onKeyDown);
+            if (element) {
+              element.off('keydown', $typeahead.$onKeyDown);
+              element.on('blur', $typeahead.$onBlur);
+            }
           }
           if (!options.autoSelect) {
             $typeahead.activate(-1);
@@ -224,6 +248,7 @@ angular.module('mgcrea.ngStrap.typeahead', ['mgcrea.ngStrap.tooltip', 'mgcrea.ng
         var onKeyUp = $typeahead.$onKeyUp; // eslint-disable-line no-unused-vars
         $typeahead.$onKeyUp = function (evt) {
           if (evt.which === KEY_CODES.escape && $typeahead.$isShown) {
+            controller.$rollbackViewValue();
             $typeahead.hide();
             evt.stopPropagation();
           }
@@ -232,6 +257,7 @@ angular.module('mgcrea.ngStrap.typeahead', ['mgcrea.ngStrap.tooltip', 'mgcrea.ng
         var onFocusKeyUp = $typeahead.$onFocusKeyUp; // eslint-disable-line no-unused-vars
         $typeahead.$onFocusKeyUp = function (evt) {
           if (evt.which === KEY_CODES.escape) {
+            controller.$rollbackViewValue();
             $typeahead.hide();
             evt.stopPropagation();
           }
@@ -300,13 +326,13 @@ angular.module('mgcrea.ngStrap.typeahead', ['mgcrea.ngStrap.tooltip', 'mgcrea.ng
         var options = {
           scope: scope
         };
-        angular.forEach(['template', 'templateUrl', 'controller', 'controllerAs', 'placement', 'container', 'delay', 'trigger', 'keyboard', 'html', 'animation', 'filter', 'limit', 'minLength', 'watchOptions', 'selectMode', 'autoSelect', 'comparator', 'id', 'prefixEvent', 'prefixClass', 'ariaLabelledby'], function (key) {
+        angular.forEach(['template', 'templateUrl', 'controller', 'controllerAs', 'placement', 'container', 'delay', 'trigger', 'keyboard', 'html', 'animation', 'filter', 'limit', 'minLength', 'watchOptions', 'selectMode', 'autoSelect', 'comparator', 'id', 'prefixEvent', 'prefixClass', 'ariaLabelledby', 'updateOnSelection'], function (key) {
           if (angular.isDefined(attr[key])) options[key] = attr[key];
         });
 
         // use string regex match boolean attr falsy values, leave truthy values be
         var falseValueRegExp = /^(false|0|)$/i;
-        angular.forEach(['html', 'container', 'trimValue', 'filter'], function (key) {
+        angular.forEach(['html', 'container', 'trimValue', 'filter', 'updateOnSelection'], function (key) {
           if (angular.isDefined(attr[key]) && falseValueRegExp.test(attr[key])) options[key] = false;
         });
 
@@ -411,6 +437,7 @@ angular.module('mgcrea.ngStrap.typeahead', ['mgcrea.ngStrap.tooltip', 'mgcrea.ng
         // Garbage collection
         scope.$on('$destroy', function () {
           element.off('keydown');
+          element.off('blur');
           if (typeahead) typeahead.destroy();
           options = null;
           typeahead = null;

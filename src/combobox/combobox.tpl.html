@@ -1,9 +1,3 @@
-<div ng-attr-id="{{::id + '_wrapper'}}">
-  <div role="combobox"
-       aria-haspopup="true"
-       ng-attr-id="{{::id + '_combobox'}}"
-       ng-aria-expanded="{{$isExpanded}}"
-       ng-aria-owns="{{::id + '_input_listbox'}}">
-    <input bs-typeahead>
-  </div>
+<div role="combobox" aria-haspopup="listbox">
+  <input bs-typeahead update-on-selection="true">
 </div>
