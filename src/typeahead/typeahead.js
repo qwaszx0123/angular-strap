@@ -167,9 +167,11 @@ angular.module('mgcrea.ngStrap.typeahead', ['mgcrea.ngStrap.tooltip', 'mgcrea.ng
           } else if (evt.keyCode === KEY_CODES.upArrow && scope.$activeIndex > 0) {
             scope.$activeIndex--;
             setAriaActiveDescendant(scope.$activeIndex);
+            angular.element(document.getElementById(options.id + '_sr_text')).html(scope.$matches[scope.$activeIndex].label);
           } else if (evt.keyCode === KEY_CODES.downArrow && scope.$activeIndex < scope.$matches.length - 1) {
             scope.$activeIndex++;
             setAriaActiveDescendant(scope.$activeIndex);
+            angular.element(document.getElementById(options.id + '_sr_text')).html(scope.$matches[scope.$activeIndex].label);
           } else if (angular.isUndefined(scope.$activeIndex)) {
             scope.$activeIndex = 0;
             setAriaActiveDescendant();
@@ -193,6 +195,11 @@ angular.module('mgcrea.ngStrap.typeahead', ['mgcrea.ngStrap.tooltip', 'mgcrea.ng
                 // Set the id on the "dropdown" component of the typeahead. The input should "control" this element.
                 $typeahead.$element.attr('id', options.id + '_listbox');
                 element.attr('aria-controls', options.id + '_listbox');
+
+                var assertDiv = document.getElementById(options.id + '_sr_text');
+                if (!assertDiv) {
+                  $typeahead.$element.parent().append('<div id="' + options.id + '_sr_text" aria-live="assertive" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0;"></div>');
+                }
               }
 
               // If the input was given an aria-labelledby attribute apply it to the "dropdown" component.
@@ -215,6 +222,9 @@ angular.module('mgcrea.ngStrap.typeahead', ['mgcrea.ngStrap.tooltip', 'mgcrea.ng
           if (!options.autoSelect) {
             $typeahead.activate(-1);
           }
+
+          var assertDiv = document.getElementById(options.id + '_sr_text');
+          angular.element(assertDiv).remove();
 
           setAriaActiveDescendant();
 
