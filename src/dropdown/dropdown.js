@@ -46,7 +46,7 @@ angular.module('mgcrea.ngStrap.dropdown', ['mgcrea.ngStrap.tooltip'])
             $dropdown.hide(/27/.test(evt.keyCode));
             return;
           } else if ($dropdown.$element && (evt.keyCode === 38 || evt.keyCode === 40 || evt.keyCode === 32 || evt.keyCode === 13)) {
-            $dropdown.$element.focus();
+            //$dropdown.$element.focus();
 
             evt.preventDefault();
             evt.stopPropagation();
