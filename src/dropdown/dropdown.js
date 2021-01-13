@@ -72,6 +72,7 @@ angular.module('mgcrea.ngStrap.dropdown', ['mgcrea.ngStrap.tooltip'])
             else if (angular.isUndefined(index)) index = 0;
             items.eq(index).addClass('active');
             $dropdown.$element.attr('aria-activedescendant', items.eq(index).attr('id'));
+			items.eq(index)[0].focus();
           }
         };
 
